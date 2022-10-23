@@ -19,15 +19,20 @@ gallery.on('show.simplelightbox');
 refs.searchForm.addEventListener('submit', loadNewImages);
 // refs.loadMoreBtn.addEventListener('click', loadMoreImages);
 
-window.onscroll = function() {
+let isNewImgsLoading = false;
+window.onscroll = async function() {
     if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight) {
-        loadMoreImages();
+        if(!isNewImgsLoading){
+            await loadMoreImages();
+        }
     }
 }
 
 // refs.loadMoreBtn.classList.add('is-hidden');
   
 async function loadNewImages (event){
+    isNewImgsLoading = true;
+
     event.preventDefault();
 
     const searchQueryInput = event.currentTarget.elements.searchQuery.value.trim();
@@ -63,11 +68,14 @@ async function loadNewImages (event){
     // {
     //     Notify.failure('We\'re sorry, but you\'ve reached the end of search results.');
     // }
+
+    isNewImgsLoading = false;
 }
 
 
 
 async function loadMoreImages(){
+    isNewImgsLoading = true;
   
     // refs.loadMoreBtn.classList.add('is-hidden');
 
@@ -100,4 +108,6 @@ async function loadMoreImages(){
     // {
     //     Notify.failure('We\'re sorry, but you\'ve reached the end of search results.');
     // }
+
+    isNewImgsLoading = false;
 }
